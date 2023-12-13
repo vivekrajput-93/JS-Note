@@ -22,3 +22,4 @@ function fun() {
 fun();
 console.log(teacher) // source
 console.log(teachingAssist) // source
+
