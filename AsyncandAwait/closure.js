@@ -3,6 +3,11 @@ function todo(task) {
     setTimeout(function fun() {
         console.log("computed", task)
     }, 2000)
+
+    function fun() {
+        console.log(task);
+    }
+    fun();
 }
 
 console.log("starting");
