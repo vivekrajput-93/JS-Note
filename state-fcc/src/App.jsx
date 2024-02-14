@@ -1,67 +1,38 @@
+import React, { useState, useMemo } from 'react';
 
-import { useReducer, useState } from 'react';
-import './App.css';
+const ExpensiveCalculationComponent = ({ value }) => {
+  // A function that performs an expensive calculation
+  const calculateResult = (input) => {
+    console.log("Calculating result...");
+    // Imagine a time-consuming calculation here
+    return input * 2;
+  };
 
-const ACTIONS = {
-  ADD_TODO : "add-todo",
-  DONE_TODO : "complete-todo"
-}
-
-
-
-
-function reducer(todo, action) {
-  switch (action.type) {
-    case ACTIONS.ADD_TODO:
-      return [...todo, newTodo(action.payload.name)];
-    case ACTIONS.DONE_TODO:
-      return todo.map(item => {
-        if (item.id === action.payload.id) {
-          return { ...item, complete: !item.complete };
-        } else {
-          return item;
-        }
-      });
-    default:
-      return todo;
-  }
-}
-
-
-
-function newTodo(name) {
-  return {id: Date.now(), name:name, complete: false}
-}
-
-
-
-function App() {
-  const [todo, dispatch] = useReducer(reducer, []);
-  const [name, setName] = useState("")
-
-
-  function handleAdd(e) {
-    e.preventDefault();
-    dispatch({ type : ACTIONS.ADD_TODO, payload : {name}} );
-    setName(" ");
-  }
-
-
-  console.log(todo)
+  // Use useMemo to memoize the result of the calculateResult function
+  const memoizedResult = useMemo(() => calculateResult(value * value), [value]);
 
   return (
-    <div className="App">
-        <form className='todo' onSubmit={handleAdd}>
-            <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
-            {todo.map((list) => (
-              <ul key={list.id}>
-                <li style={{ color : todo.complete ? "#AAA" : "#000"}}>{list.name}</li>
-              </ul>
-            ))}
-            <button>Done</button>
-        </form>
+    <div>
+      <p>Input value: {value}</p>
+      <p>Memoized Result: {memoizedResult}</p>
     </div>
   );
-}
+};
+
+const App = () => {
+  const [inputValue, setInputValue] = useState(5);
+
+  return (
+    <div>
+      <h1>useMemo Example</h1>
+      <input
+        type="number"
+        value={inputValue}
+        onChange={(e) => setInputValue(parseInt(e.target.value, 10))}
+      />
+      <ExpensiveCalculationComponent value={inputValue} />
+    </div>
+  );
+};
 
 export default App;
